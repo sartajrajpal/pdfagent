@@ -18,12 +18,6 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import ChatOpenAI
 from langchain.schema import Document
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-)
-logger = logging.getLogger(__name__)
-
 load_dotenv()
 
 Entrez.email = os.getenv('PUBMED_EMAIL', 'sartaj.rajpal@yale.edu')
@@ -81,6 +75,7 @@ class ResearchAgent:
             })
         print(f"Found {len(results)} papers in PubMed")
         return results
+
     def search_arxiv(self, query: str, max_results: int = 5) -> List[Dict[str, Any]]:
         search = arxiv.Search(
             query=query,
@@ -115,7 +110,6 @@ class ResearchAgent:
         with open(pdf_path, 'wb') as temp_file:
             temp_file.write(response.content)
         
-      
         print(f"Processing PDF with Marker: {pdf_url}")
         markdown_text = self.convert_pdf_to_markdown(pdf_path)
         
@@ -127,7 +121,6 @@ class ResearchAgent:
     def convert_pdf_to_markdown(self, pdf_path: str) -> str:
         command = f"marker_single \"{pdf_path}\" --output_dir \"{self.output_dir}\""
         subprocess.run(command, shell=True, check=True)
-        
         
         base_name = os.path.splitext(os.path.basename(pdf_path))[0]
         markdown_file_path = self.output_dir / base_name / f"{base_name}.md"
