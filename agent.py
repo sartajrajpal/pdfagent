@@ -48,11 +48,11 @@ class ResearchAgent:
         self.output_dir.mkdir(parents=True, exist_ok=True)
         print("Cleared and recreated the output directory")
 
-    def _get_cache_key(self, url: str) -> str:
+    def _get_cache_key(self, url: str):
         return hashlib.md5(url.encode()).hexdigest()
 
     @cached(cache=TTLCache(maxsize=100, ttl=3600))
-    def search_pubmed(self, query: str, max_results: int = 5) -> List[Dict[str, Any]]:
+    def search_pubmed(self, query: str, max_results: int = 5):
         handle = Entrez.esearch(db="pubmed", term=query, retmax=max_results)
         record = Entrez.read(handle)
         handle.close()
@@ -76,7 +76,7 @@ class ResearchAgent:
         print(f"Found {len(results)} papers in PubMed")
         return results
 
-    def search_arxiv(self, query: str, max_results: int = 5) -> List[Dict[str, Any]]:
+    def search_arxiv(self, query: str, max_results: int = 5):
         search = arxiv.Search(
             query=query,
             max_results=max_results,
@@ -95,7 +95,7 @@ class ResearchAgent:
         print(f"Found {len(results)} papers in arXiv")
         return results
 
-    def process_pdf(self, pdf_url: str) -> str:
+    def process_pdf(self, pdf_url: str):
         cache_key = self._get_cache_key(pdf_url)
         cached_text = self.disk_cache.get(cache_key)
         if cached_text:
@@ -118,7 +118,7 @@ class ResearchAgent:
         return markdown_text
        
 
-    def convert_pdf_to_markdown(self, pdf_path: str) -> str:
+    def convert_pdf_to_markdown(self, pdf_path: str:
         command = f"marker_single \"{pdf_path}\" --output_dir \"{self.output_dir}\""
         subprocess.run(command, shell=True, check=True)
         
@@ -141,7 +141,7 @@ class ResearchAgent:
         print(f"Created vector store with {len(documents)} documents")
         
 
-    def get_relevant_documents(self, query: str, k: int = 3) -> List[Document]:
+    def get_relevant_documents(self, query: str, k: int = 3):
         if not self.vector_store:
             print("No vector store available")
             return []
@@ -150,7 +150,7 @@ class ResearchAgent:
         return docs
 
 
-    def process_query(self, query: str) -> str:
+    def process_query(self, query: str):
         print(f"Processing query: {query}")
         
         self.clear_output_directory()
