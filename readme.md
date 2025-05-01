@@ -1,0 +1,1 @@
+Add this file to this Github repo once you fork it: 'https://github.com/VikParuchuri/marker/'. Add a .env file with your OpenAI API and PubMed keys. Then the agent should work! 
